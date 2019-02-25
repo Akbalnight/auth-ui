@@ -1,0 +1,48 @@
+
+
+.login-center{
+    text-align: center;
+    font-size: 14px;
+    max-width: 350px;
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 8px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -300px;
+    margin-left: -150px;
+    background-image: url(/static/media/Logo.8eb43c84.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    padding-top: 300px;
+    width: 100%;
+}
+.login-form{
+
+}
+.login-form-forgot {
+    float: right;
+}
+
+/**/
+
+.login-form-item-button{
+    padding-top: 5px;
+}
+
+.login-form-button {
+    width: 100%;
+    background-color: #1890ff;
+    border-color: #1890ff;
+}
+
+.login-form-button:hover {
+    background-color: #25607c;
+    border-color: #25607c;
+}
+
+.login-form .ant-form-item {
+    margin-bottom: 15px;
+}
