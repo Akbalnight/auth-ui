@@ -17,7 +17,8 @@ class Login extends React.Component {
         checkServices: PropTypes.function,
         services_esb: PropTypes.boolean,
         version_info: PropTypes.string,
-        dummy_user_data: PropTypes.object,
+        dummy_login_data: PropTypes.object,
+        logo: PropTypes.object
       }
 
     handleSubmit = (e) => {
@@ -31,8 +32,8 @@ class Login extends React.Component {
 
     doRequest = (values) => {
 
-        if (this.props.dummy_user_data) {
-            this.props.authRequestResult(this.props.dummy_user_data);
+        if (this.props.dummy_login_data) {
+            this.props.authRequestResult(this.props.dummy_login_data);
             return {};
         }
 
@@ -61,7 +62,7 @@ class Login extends React.Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
-
+        
         return (
             <div className='login-center'>
                 {this.props.services_esb ?

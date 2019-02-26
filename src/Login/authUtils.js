@@ -78,6 +78,18 @@ const authRequest = ({ loginUrl, logoutUrl, username = null, password = null, on
     });
 };
 
+export const checkAuthRequest = (loginUrl, logoutUrl, onSuccess = () => {}, onError = () => {}) => {
+    return authRequest({
+        loginUrl,
+        logoutUrl,
+        username: null,
+        password: null,
+        onSuccess,
+        onError,
+        checkServices: null
+    });
+};
+
 export const doLogoutRequest = ({ url, onSuccess = (value) => {}, onError = (value) => {} }) => {
     return doRequest({ url, method: 'GET', onSuccess, onError });
 };
