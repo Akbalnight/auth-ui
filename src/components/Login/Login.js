@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Icon, Input, Button } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { authRequestStart, authRequestResult } from "../actions";
+import { authRequestStart, authRequestResult } from "../../actions";
 import { doAuthRequest } from "./authUtils";
 
 import 'antd/dist/antd.css';
@@ -38,11 +38,11 @@ class Login extends React.Component {
         }
 
         if (!this.props.loginUrl) {
-            console.error('Не указан URL для входа.');
+            console.error('auth-ui/Login: Не указан URL для входа.');
             return {};
         }
         if (!this.props.logoutUrl) {
-            console.error('Не указан URL для выхода.');
+            console.error('auth-ui/Login: Не указан URL для выхода.');
             return {};
         }
 
@@ -62,7 +62,7 @@ class Login extends React.Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        
+
         return (
             <div className='login-center'>
                 {this.props.services_esb ?

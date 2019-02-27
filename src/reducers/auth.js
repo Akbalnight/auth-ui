@@ -14,7 +14,7 @@ const auth = (state = initialState, action) => {
         case types.AUTH_REQUEST_START:
             return initialState;
         case types.AUTH_REQUEST_RESULT:
-            if (action.result) {
+        if (action.result) {
                 let permissions = {};
                 action.result.roles.forEach(r => r.permissions.forEach(p => {
                     permissions[p.path.replace(/\/+$/, "") + ':' + p.method] = true;

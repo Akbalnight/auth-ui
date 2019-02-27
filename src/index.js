@@ -1,4 +1,5 @@
-import Login from './Login/Login';
-import authReducer from './reducers';
+import Login from './components/Login';
+import CheckAccess from './components/CheckAccess';
+import auth from './reducers';
 
-export { Login, authReducer };
+export { Login, CheckAccess, auth };

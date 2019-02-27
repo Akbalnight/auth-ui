@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
-import { authReducer } from 'auth-ui';
+import { auth } from 'auth-ui';
 
 const reducer = combineReducers({
-    authReducer
+    auth,
 });
 
 export default reducer;

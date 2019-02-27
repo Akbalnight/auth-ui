@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { authRequestResult } from "../actions";
+import { authRequestResult } from "../../actions";
 import {Modal} from 'antd';
 
 export const doAuthRequest = ({ loginUrl, logoutUrl, username, password, onSuccess = () => {}, onError = () => {}, checkServices }) => {

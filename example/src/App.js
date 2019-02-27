@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 
-import { Login } from 'auth-ui';
+import { Login, CheckAccess } from 'auth-ui';
 
 export default class App extends Component {
     render () {
         return (
         <div>
+            <CheckAccess permission='/LoginPage/RedDiv:GET'>
+                <div style={{ width: '100%', height: 100, background: 'red' }} />
+            </CheckAccess>
             <Login
                 loginUrl={null}
                 logoutUrl={null}
