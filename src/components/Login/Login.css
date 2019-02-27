@@ -8,17 +8,22 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    margin-top: -300px;
     margin-left: -150px;
     background-image: url(/static/media/Logo.8eb43c84.png);
     background-size: contain;
     background-repeat: no-repeat;
 
-    padding-top: 300px;
     width: 100%;
 }
+.logo {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+}
 .login-form{
-
+    position: relative;
 }
 .login-form-forgot {
     float: right;

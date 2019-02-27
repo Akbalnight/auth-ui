@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { authRequestStart, authRequestResult } from "../../actions";
 import { doAuthRequest } from "./authUtils";
+import { ReactComponent as Logo } from './Logo.svg'
 
 import 'antd/dist/antd.css';
 import './Login.css';
@@ -67,6 +68,9 @@ class Login extends React.Component {
             <div className='login-center'>
                 {this.props.services_esb ?
                 <Form onSubmit={this.handleSubmit} className="login-form">
+                    <div className='logo'>
+                        {this.props.logo || <Logo />}
+                    </div>
                     <FormItem>
                         {getFieldDecorator('username', {
                             rules: [{ required: true, message: 'Введите имя пользователя' }],
