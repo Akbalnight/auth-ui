@@ -1,22 +1,21 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import {store_auth} from './store_auth';
 
 class CheckAccess extends React.Component {
+
     static propTypes = {
         permission: PropTypes.string,
     }
 
+    static on = permission => {
+        const userPermissions = store_auth.get().permissions;
+        return  userPermissions && userPermissions[permission];
+    }
+
     render() {
-        if (this.props.userPermissions[this.props.permission]) {
-            return this.props.children;
-        }
-        return null;
+        return CheckAccess.on(this.props.permission) ? this.props.children : null;
     }
 }
 
-const mapStateToProps = (store) => ({
-    userPermissions: store.auth.permissions,
-})
-
-export default connect(mapStateToProps)(CheckAccess);
+export default CheckAccess;
