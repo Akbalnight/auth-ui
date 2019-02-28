@@ -1,6 +1,5 @@
-import $ from "jquery";
 import { authRequestResult } from "../../actions";
-import {Modal} from 'antd';
+import { Modal } from 'antd';
 
 export const doAuthRequest = ({ loginUrl, logoutUrl, username, password, onSuccess = () => {}, onError = () => {}, checkServices }) => {
     return authRequest({ loginUrl, logoutUrl, username, password, onSuccess, onError: () => {
@@ -17,64 +16,63 @@ export const doAuthRequest = ({ loginUrl, logoutUrl, username, password, onSucce
 };
 
 const authRequest = ({ loginUrl, logoutUrl, username = null, password = null, onSuccess = () => {}, onError = () => {}, checkServices }) => {
-    let request = {
-        url: loginUrl,
-        method: "GET",
-        contentType: "application/json",
-        headers:{ "accept":"*/*" }
-    };
+    let request = new Request(loginUrl);
 
+    let headers = new Headers();
+    headers.append('accept', '*/*');
+    headers.append('Content-Type', 'application/json')
     if (username && password) {
-        request.beforeSend = xhr => xhr.setRequestHeader("Authorization", "Basic " + btoa(username.toLowerCase() + ":" + password));
-        // $.ajax({ url: '/api/monitoring/audit', method: 'POST', contentType: "application/json;charset=UTF-8", headers:{ "accept":"*/*" }, data: JSON.stringify({ uname: btoa(username), pwd: btoa(password) }) });
+        headers.append('Authorization', "Basic " + btoa(username.toLowerCase() + ":" + password));
     }
 
-    return $.ajax(request).done((data, textStatus, jqXHR) => {
-        checkServices && checkServices();
-        if (jqXHR.status === 201) {
-            Modal.error({
-                centered: true,
-                title: 'Ошибка',
-                content: 'Ошибка доступа к системе. Обратитесть к администратору.',
-                onOk: () => {
-                    doLogoutRequest({ url: logoutUrl });
-                    authRequestResult(null)
-                }
-            });
+    let init = {
+        method: "GET",
+        headers: headers
+    }
+
+    return fetch(request, init).then(response => {
+        if (response.ok) {
+            return response.json()
         } else {
-            onSuccess(data, textStatus, jqXHR);
+            switch(response.status) {
+                case 201:
+                    Modal.error({
+                        centered: true,
+                        title: 'Ошибка',
+                        content: 'Ошибка доступа к системе. Обратитесть к администратору.',
+                        onOk: () => {
+                            doLogoutRequest({ url: logoutUrl });
+                            authRequestResult(null)
+                        }
+                    });
+                case 423:
+                    Modal.error({
+                        centered: true,
+                        title: 'Ошибка',
+                        content: 'Пользователь c таким логином уже авторизован в системе, попробуйте войти позднее',
+                        onOk: () => {
+                            doLogoutRequest({ url: logoutUrl });
+                            authRequestResult(null)
+                        }
+                    });
+                case 404:
+                    authRequestResult(null);
+                    break;
+                default:
+                    onError(response);
+                    break;
+            }
         }
-    }).fail((jqXHR, textStatus, errorThrown) => {
-        console.error('on ajax error', jqXHR, textStatus, errorThrown);
-        var self = this;
-        if (jqXHR.status === 404) {
-            authRequestResult(null)
+    }, function(reason) {
+        console.error('on fetch error', reason);
+    }).then(data => {
+        if (!data) {
+            return;
         }
-        else if (jqXHR.status === 423) {
-            Modal.error({
-                centered: true,
-                title: 'Ошибка',
-                content: 'Пользователь c таким логином уже авторизован в системе, попробуйте войти позднее',
-                onOk: () => {
-                    doLogoutRequest({ url: logoutUrl });
-                    authRequestResult(null)
-                }
-            });
-        }
-        else if (jqXHR.status === 201) {
-            Modal.error({
-                centered: true,
-                title: 'Ошибка',
-                content: 'Ошибка доступа к системе. Обратитесть к администратору.',
-                onOk: () => {
-                    doLogoutRequest({ url: logoutUrl });
-                    authRequestResult(null)
-                }
-            });
-        }
-        else {
-            onError(jqXHR, textStatus, errorThrown);
-        }
+        checkServices && checkServices();
+        onSuccess(data);
+    }, function(reason) {
+        console.error('on json() error', reason);
     });
 };
 
@@ -91,45 +89,53 @@ export const checkAuthRequest = (loginUrl, logoutUrl, onSuccess = () => {}, onEr
 };
 
 export const doLogoutRequest = ({ url, onSuccess = (value) => {}, onError = (value) => {} }) => {
-    return doRequest({ url, method: 'GET', onSuccess, onError });
-};
+    let request = new Request(url);
 
-export function doRequest({ url, method = 'GET', onSuccess = () => {}, onError = () => {}, data }){
-    let dataValue = data != null && typeof data === 'object' ? JSON.stringify(data) : data;
-    return $.ajax(
-        {
-            url,
-            method,
-            contentType: "application/json;charset=UTF-8",
-            headers:{ "accept":"*/*" },
-            data: dataValue
+    let headers = new Headers();
+    headers.append('accept', '*/*');
+    headers.append('Content-Type', 'application/json;charset=UTF-8')
+
+    let init = {
+        method: "GET",
+        headers: headers
+    }
+
+    return fetch(request, init).then(response => {
+        if (response.ok) {
+            return onSuccess(response);
         }
-    ).done((data, textStatus, jqXHR) => {
-        onSuccess(data, textStatus, jqXHR);
-    }).fail((jqXHR, textStatus, errorThrown) => {
-        console.error('ajax error', jqXHR, textStatus, errorThrown);
-        if (jqXHR.status === 401) {
-            Modal.error({
-                centered: true,
-                title: 'Ошибка',
-                content: 'Необходима повторная авторизация',
-                onOk: () => {authRequestResult(null)}
-            });
-        } else if (jqXHR.status === 403) {
-            Modal.error({
-                centered: true,
-                title: 'Ошибка',
-                content: 'Доступ запрещён',
-            });
-        } else if (jqXHR.status === 423) {
-            Modal.error({
-                centered: true,
-                title: 'Ошибка',
-                content: 'Пользователь c таким логином уже авторизован в системе, попробуйте войти позднее',
-                onOk: () => {authRequestResult(null)}
-            });
-        } else if (jqXHR.status === 200) { onSuccess(data, textStatus, jqXHR);
-        } else if (jqXHR.status === 201) { onSuccess(data, textStatus, jqXHR);
-        } else { onError(jqXHR, textStatus, errorThrown); }
+        else {
+            switch(response.status) {
+                case 401:
+                    Modal.error({
+                        centered: true,
+                        title: 'Ошибка',
+                        content: 'Необходима повторная авторизация',
+                        onOk: () => {authRequestResult(null)}
+                    });
+                case 403:
+                    Modal.error({
+                        centered: true,
+                        title: 'Ошибка',
+                        content: 'Доступ запрещён',
+                    });
+                    break;
+                case 423:
+                    Modal.error({
+                        centered: true,
+                        title: 'Ошибка',
+                        content: 'Пользователь c таким логином уже авторизован в системе, попробуйте войти позднее',
+                        onOk: () => {authRequestResult(null)}
+                    });
+                case 404:
+                    authRequestResult(null);
+                    break;
+                default:
+                    onError(response);
+                    break;
+            }
+        }
+    }, function(reason) {
+        console.error('on fetch error', reason);
     });
 };

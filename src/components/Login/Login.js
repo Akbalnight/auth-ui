@@ -32,11 +32,10 @@ class Login extends React.Component {
     };
 
     doRequest = (values) => {
-
-        if (this.props.dummy_login_data) {
+        /* if (this.props.dummy_login_data) {
             this.props.authRequestResult(this.props.dummy_login_data);
             return {};
-        }
+        } */
 
         if (!this.props.loginUrl) {
             console.error('auth-ui/Login: Не указан URL для входа.');
@@ -49,7 +48,7 @@ class Login extends React.Component {
 
         this.props.authRequestStart();
         let self = this;
-
+        
         doAuthRequest({
             loginUrl: this.props.loginUrl,
             logoutUrl: this.props.logoutUrl,
