@@ -19,7 +19,7 @@ class Login extends React.Component {
         services_esb: PropTypes.boolean,
         version_info: PropTypes.string,
         dummy_login_data: PropTypes.object,
-        logo: PropTypes.object
+        logo: PropTypes.node
       }
 
     handleSubmit = (e) => {

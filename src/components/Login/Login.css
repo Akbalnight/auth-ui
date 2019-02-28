@@ -9,18 +9,17 @@
     top: 50%;
     left: 50%;
     margin-left: -150px;
-    background-image: url(/static/media/Logo.8eb43c84.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-
     width: 100%;
 }
 .logo {
     position: absolute;
-    bottom: 0;
+    top: -250px;
     left: 0;
     width: 100%;
     z-index: -1;
+}
+.logo img {
+    width: 100%;
 }
 .login-form{
     position: relative;
