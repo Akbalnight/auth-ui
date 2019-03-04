@@ -1,7 +1,7 @@
 import React from 'react';
 import {checkPermissionConnector} from './connect';
 
-class SecuredComponentHOC extends React.Component {
+class SecuredHOC extends React.Component {
     render() {
         return this.props.permissionChecker.has(this.props.permission)
             ? this.props.children
@@ -9,4 +9,4 @@ class SecuredComponentHOC extends React.Component {
     }
 }
 
-export default checkPermissionConnector(SecuredComponentHOC);
+export default checkPermissionConnector(SecuredHOC);

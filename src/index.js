@@ -7,7 +7,7 @@ import {
     PermissionChecker,
     checkPermissionConnector,
     PermissionCheckerProvider,
-    SecuredComponentHOC   
+    SecuredHOC   
 } from './components/PermissionChecker';
 
 export { 
@@ -15,7 +15,7 @@ export {
     PermissionChecker, 
     checkPermissionConnector,
     PermissionCheckerProvider, 
-    SecuredComponentHOC, 
+    SecuredHOC, 
     auth, 
     authRequestResult, 
     checkAuthRequest, 
