@@ -67,7 +67,7 @@ class Login extends React.Component {
             <div className='login-center'>
                 {this.props.services_esb ?
                 <Form onSubmit={this.handleSubmit} className="login-form">
-                    <div className='logo'>
+                    <div className='auth-logo'>
                         {this.props.logo || <Logo />}
                     </div>
                     <FormItem>

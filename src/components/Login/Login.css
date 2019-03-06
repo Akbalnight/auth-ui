@@ -11,14 +11,14 @@
     margin-left: -150px;
     width: 100%;
 }
-.logo {
+.auth-logo {
     position: absolute;
     top: -250px;
     left: 0;
     width: 100%;
     z-index: -1;
 }
-.logo img {
+.auth-logo img {
     width: 100%;
 }
 .login-form{
