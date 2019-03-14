@@ -22,7 +22,12 @@ const authRequest = ({ loginUrl, logoutUrl, username = null, password = null, on
     headers.append('accept', '*/*');
     headers.append('Content-Type', 'application/json')
     if (username && password) {
-        headers.append('Authorization', "Basic " + btoa(username.toLowerCase() + ":" + password));
+        try {
+            headers.set('Authorization', "Basic " + btoa(username.toLowerCase() + ":" + password));
+        }
+        catch (err) {
+            return Promise.reject(getAuthError({ status: 401 }));
+        }
     }
 
     let init = {
