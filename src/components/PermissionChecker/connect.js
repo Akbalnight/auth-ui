@@ -12,6 +12,6 @@ export const checkPermissionConnector = (WrappedComponent) => {
     }
     Connect.contextTypes = {
         permissionChecker: PropTypes.object
-    }
+    };
     return Connect;
 }

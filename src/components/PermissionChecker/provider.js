@@ -10,7 +10,7 @@ export class PermissionCheckerProvider extends React.Component{
 
     static childContextTypes = {
         permissionChecker: PropTypes.object.isRequired,
-    }
+    };
 
     getChildContext(){
         return {
