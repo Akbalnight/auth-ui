@@ -1,7 +1,7 @@
 import * as types from '../constants/actionTypes';
 
 const initialState = {
-    loading: true,
+    loading: false,
     loggedIn: false,
     username: null,
     roles: [],
@@ -12,7 +12,7 @@ const initialState = {
 const auth = (state = initialState, action) => {
     switch (action.type) {
         case types.AUTH_REQUEST_START:
-            return initialState;
+            return Object.assign({}, initialState, {loading: true});
         case types.AUTH_REQUEST_RESULT:
             if (action.result) {
                 let permissions = {};

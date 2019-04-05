@@ -93,7 +93,7 @@ export const checkAuthRequest = (loginUrl, logoutUrl, onSuccess = () => {}, onEr
     });
 };
 
-export const doLogoutRequest = ({ url, onSuccess = (value) => {}, onError = (value) => {} }) => {
+export const doLogoutRequest = ({ url, method='GET', onSuccess = (value) => {}, onError = (value) => {} }) => {
     let request = new Request(url);
 
     let headers = new Headers();
@@ -101,8 +101,8 @@ export const doLogoutRequest = ({ url, onSuccess = (value) => {}, onError = (val
     headers.append('Content-Type', 'application/json;charset=UTF-8')
 
     let init = {
-        method: "GET",
-        headers: headers
+        method,
+        headers
     }
 
     return fetch(request, init).then(response => {

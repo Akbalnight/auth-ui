@@ -1,20 +1,22 @@
 import React, { Component } from 'react'
+import {Login,  checkPermissionConnector, SecuredHOC} from 'auth-ui';
 
-import { Login, CheckAccess } from 'auth-ui';
-
-export default class App extends Component {
+class App extends Component {
+    isPermitted = route => this.props.permissionChecker.has(route);
     render () {
         return (
         <div>
-            <CheckAccess permission='/LoginPage/RedDiv:GET'>
+            <SecuredHOC permission='/LoginPage/RedDiv:GET'>
                 <div style={{ width: '100%', height: 100, background: 'red' }} />
-            </CheckAccess>
+            </SecuredHOC>
             <Login
                 loginUrl={null}
                 logoutUrl={null}
                 services_esb={true}
-                version_info={'Пример использования Login-компоненты. Версия 0.0.1 от 25.02.2019'} />
+                version_info={'Пример использования Login-компоненты. Версия 0.0.2 от 05.04.2019'} />
         </div>
         )
     }
 }
+
+export default checkPermissionConnector(App);
