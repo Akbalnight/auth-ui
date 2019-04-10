@@ -23,6 +23,7 @@ const auth = (state = initialState, action) => {
                 return {
                     loading: false,
                     loggedIn: true,
+                  	id: action.result.id,
                     username: action.result.name,
                     email: action.result.email,
                     avatarUrl: userData && 'avatarUrl' in userData ? userData.avatarUrl : null,
