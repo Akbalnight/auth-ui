@@ -15,7 +15,7 @@ const recursiveCacheGenerator = (state, node, path = null, cache) => {
     cache[path] = node.map(p =>
       (state.permissions && state.permissions[p]) ||
       (Array.isArray(state.roles) && state.roles.includes(p))
-    ).every(p => p);
+    ).some(p => p);
 
     return cache[path];
   } else if (typeof node === 'object') {
