@@ -1,8 +1,12 @@
 import { authRequestResult } from "../../actions";
+import qs from 'qs';
 import { Modal } from 'antd';
+const USER = 'ASKUTE-service';
+const PASSWORD = 'ASKUTE-password';
+const BASIC_AUTH = `Basic ${btoa(USER + ':' + PASSWORD)}`;
 
-export const doAuthRequest = ({ loginUrl, logoutUrl, username, password, onSuccess = () => {}, onError = () => {}, checkServices }) => {
-    return authRequest({ loginUrl, logoutUrl, username, password, onSuccess, onError: () => {
+export const doAuthRequest = ({ loginUrl, logoutUrl, type,  username, password, onSuccess = () => {}, onError = () => {}, checkServices }) => {
+    return authRequest({ loginUrl, logoutUrl, type, username, password, onSuccess, onError: () => {
         Modal.error({
             centered: true,
             title: 'Ошибка',
@@ -15,26 +19,36 @@ export const doAuthRequest = ({ loginUrl, logoutUrl, username, password, onSucce
     }, checkServices });
 };
 
-const authRequest = ({ loginUrl, logoutUrl, username = null, password = null, onSuccess = () => {}, onError = () => {}, checkServices }) => {
+const authRequest = ({ loginUrl, logoutUrl, type = 'basic', username = null, password = null, onSuccess = () => {}, onError = () => {}, checkServices }) => {
     let request = new Request(loginUrl);
 
     let headers = new Headers();
     headers.append('accept', '*/*');
-    headers.append('Content-Type', 'application/json')
-    if (username && password) {
+    if (type === 'basic' && username && password) {
         try {
             headers.set('Authorization', "Basic " + btoa(username.toLowerCase() + ":" + password));
+            headers.append('Content-Type', 'application/json')
         }
         catch (err) {
-            return Promise.reject(getAuthError({ status: 401 }));
+            return Promise.reject({ status: 401 });
         }
+    } else {
+      headers.set('Authorization', BASIC_AUTH);
+      headers.append('Content-Type', 'application/x-www-form-urlencoded')
     }
 
-    let init = {
-        method: "GET",
+    const init = {
+        method: type === 'basic' ? "GET" : "POST",
         headers: headers
-    }
+    };
 
+    if(type === 'token') {
+      init.body = qs.stringify({
+        grant_type: 'password',
+        username,
+        password
+      })
+    }
     return fetch(request, init).then(response => {
         if (response.ok) {
             return response.json()
