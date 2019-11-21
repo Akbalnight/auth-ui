@@ -15,12 +15,13 @@ class Login extends React.Component {
     static propTypes = {
         loginUrl: PropTypes.string,
         logoutUrl: PropTypes.string,
+        type: PropTypes.string,
         checkServices: PropTypes.function,
         services_esb: PropTypes.boolean,
         version_info: PropTypes.string,
         dummy_login_data: PropTypes.object,
         logo: PropTypes.node
-      }
+      };
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -52,6 +53,7 @@ class Login extends React.Component {
         doAuthRequest({
             loginUrl: this.props.loginUrl,
             logoutUrl: this.props.logoutUrl,
+            type: this.props.type,
             username: values.username,
             password: values.password,
             onSuccess: (value) => {self.props.authRequestResult(value)},
