@@ -20,6 +20,15 @@ const auth = (state = initialState, action) => {
                     permissions[p.path.replace(/\/+$/, "") + ':' + p.method] = true;
                 }));
                 const userData = action.result.jsonData;
+                let roles;
+                if(Array.isArray(action.result.roles)){
+                  roles = action.result.roles.map(r => r.name);
+                } else {
+                  const arr = action.result.roles.split(', ');
+                  arr[0] = arr[0].slice(1);
+                  arr[arr.length-1] =  arr[0].slice(0, arr.length-1);
+                  roles = arr;
+                }
                 return {
                     loading: false,
                     loggedIn: true,
@@ -33,7 +42,7 @@ const auth = (state = initialState, action) => {
                     position: userData && 'position' in userData ? userData.position : null,
                     phone: userData && 'phone' in userData ? userData.phone : null,
                     permissions: permissions,
-                    roles: action.result.roles.map(r => r.name)
+                    roles
                 };
             } else {
                 return {
